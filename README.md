@@ -1,1 +1,1 @@
-# benchmarking-the-memory-hierarchy
+# Benchmarking-the-Memory-Hierarchy
