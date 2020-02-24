@@ -15,14 +15,17 @@ specified size, averaged over the specified number of iters.
 */
 double time_buffer_read(unsigned size, unsigned iters)
 {
-  int* buffer = new int[size];
+  // since each int is more than one byte
+  unsigned num_ints = size/sizeof(int);
+
+  int* buffer = new int[num_ints];
   // This prevents the compiler from optimizing away the timed loop
   volatile unsigned index = 0;
 
   // Initialize the buffer with random values
-  for (unsigned i = 0; i < size; i++)
+  for (unsigned i = 0; i < num_ints; i++)
   {
-    buffer[i] = rand() % size;
+    buffer[i] = rand() % num_ints;
   }
 
   const auto start = steady_clock::now();
@@ -87,7 +90,7 @@ int main(int argc, char** argv)
     output_file << "size,average_read_time\n";
     for (unsigned i = 0; i < results.size(); i++)
     {
-      output_file << sizes[i] << "," << results[i] << "\n";
+      output_file << double(sizes[i])/1000 << "," << results[i] << "\n";
     }
 
     output_file.close();
